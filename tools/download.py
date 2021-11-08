@@ -31,7 +31,7 @@ def download_url(url: str, folder: str, log: bool = True):
         log (bool, optional): If :obj:`False`, will not print anything to the
             console. (default: :obj:`True`)
 
-    Adtapted from torch_geometric.data.download.py
+    Adapted from torch_geometric.data.download.py
     """
     import os.path as osp
 
