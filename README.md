@@ -15,3 +15,7 @@ pip install git+https://github.com/libAtoms/matscipy.git
 pip install git+https://github.com/cosmo-epfl/librascal.git@workshop/mlip2021
 
 ```
+
+```
+docker buildx build --platform linux/amd64 -t felixmusil/mlip_workshop2021:latest --push .
+```
