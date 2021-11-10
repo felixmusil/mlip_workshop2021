@@ -5,7 +5,10 @@ __pycache__/
 
 # C extensions
 *.so
-
+*.npy
+*.json
+*.xyz
+*.extxyz
 # Distribution / packaging
 .Python
 build/
