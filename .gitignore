@@ -7,7 +7,10 @@ __pycache__/
 .DS_STORE
 # C extensions
 *.so
-
+*.npy
+*.json
+*.xyz
+*.extxyz
 # Distribution / packaging
 .Python
 build/
