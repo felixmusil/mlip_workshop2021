@@ -29,9 +29,9 @@ def do_lattice(bulk, use_precon=True, elastic=True, tol=1.0e-3):
    # use one of the routines from utilities module to relax the initial
    # unit cell and atomic positions
    if use_precon:
-       bulk = relax_atoms_cell(bulk, tol=tol, traj_file="bulk.relax.extxyz", symmetrize=True)
+       bulk = relax_atoms_cell(bulk, tol=tol, traj_file=None, symmetrize=True, logfile='log.txt')
    else:
-       bulk = relax_atoms_cell(bulk, tol=tol, traj_file=None, method='fire', symmetrize=True)
+       bulk = relax_atoms_cell(bulk, tol=tol, traj_file=None, method='fire', symmetrize=True, logfile='log.txt')
 
 
    precon = None
@@ -70,7 +70,7 @@ def do_lattice(bulk, use_precon=True, elastic=True, tol=1.0e-3):
       scaled_bulk.set_calculator(bulk.get_calculator())
       scaled_bulk.set_cell(scaled_bulk.get_cell()*cell_scaling, scale_atoms=True)
 
-      scaled_bulk = relax_atoms_cell(scaled_bulk, tol=tol, traj_file=None, constant_volume=True, method='fire', symmetrize=True, max_steps=500)
+      scaled_bulk = relax_atoms_cell(scaled_bulk, tol=tol, traj_file=None, constant_volume=True, method='fire', symmetrize=True, max_steps=500, logfile='log.txt')
 
       E_vs_V.insert(0, (scaled_bulk.get_volume()/len(bulk), scaled_bulk.get_potential_energy()/len(bulk)) )
       evaluate(scaled_bulk)

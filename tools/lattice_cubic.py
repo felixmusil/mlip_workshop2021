@@ -16,10 +16,10 @@ def do_lattice(bulk, elastic=True):
 
    # use one of the routines from utilities module to relax the initial
    # unit cell and atomic positions
-   bulk = relax_atoms_cell(bulk, tol=tol, traj_file=None, symmetrize=True)
+   bulk = relax_atoms_cell(bulk, tol=tol, traj_file=None, symmetrize=True, logfile='log.txt')
 
-   print ("relaxed bulk")
-   ase.io.write(sys.stdout, bulk, format='extxyz')
+#    print ("relaxed bulk")
+#    ase.io.write(sys.stdout, bulk, format='extxyz')
 
    if elastic:
        # reset calculator to non-symmetrized one (not optimal, but would otherwise need to have optimizer used by fit_elastic_constants to reset symmetry for each relaxation):w
@@ -41,14 +41,14 @@ def do_lattice(bulk, elastic=True):
       scaled_bulk = bulk.copy()
       scaled_bulk.set_calculator(bulk.get_calculator())
       scaled_bulk.set_cell(scaled_bulk.get_cell()*cell_scaling, scale_atoms=True)
-      scaled_bulk = relax_atoms_cell(scaled_bulk, tol=tol, traj_file=None, constant_volume=True, method='fire', symmetrize=True)
+      scaled_bulk = relax_atoms_cell(scaled_bulk, tol=tol, traj_file=None, constant_volume=True, method='fire', symmetrize=True, logfile='log.txt')
       # evaluate(scaled_bulk)
-      ase.io.write(f, scaled_bulk, format='extxyz')
+    #   ase.io.write(f, scaled_bulk, format='extxyz')
       E_vs_V.insert(0,  (scaled_bulk.get_volume()/len(scaled_bulk), scaled_bulk.get_potential_energy()/len(bulk)) )
 
 
-   for (V, E) in E_vs_V:
-     print ("EV_final ", V, E)
+#    for (V, E) in E_vs_V:
+#      print ("EV_final ", V, E)
 
    if elastic:
        return (c11, c12, c44, E_vs_V)

@@ -106,3 +106,31 @@ dft_ref['diamond'] = {"bulk_modulus": 88.596696666666602,
                "E_vs_V": [[17.813109023568057, -163.06663280425], [18.322054995670012, -163.110046112], [18.831000967771949, -163.1415028745], [19.339946939873919, -163.162464704125], [19.848892911975845, -163.174242557], [20.3578388840778, -163.177966801875], [20.866784856179741, -163.17463056225], [21.375730828281693, -163.165132595375], [21.884676800383637, -163.150242437875], [22.393622772485578, -163.130671150875], [22.902568744587512, -163.107009425875], [23.411514716689464, -163.079814823625]],
                "c44": 72.176929999999999, "a0": 5.4610215037046075}
 dft_ref['beta-Sn'] = {"E_vs_V": [[13.462620304548336, -162.75664626205], [13.847236220240584, -162.7954601585], [14.231905420366559, -162.8239554888], [14.616528955757214, -162.84260051285], [15.00117439209707, -162.85309453065], [15.385871808743351, -162.85631297195], [15.770478826496822, -162.85333965315], [16.155054108065379, -162.84486224], [16.539436349955054, -162.8314338523], [16.924316511337032, -162.8142848878], [17.30841204863296, -162.79382098635], [17.692092233780102, -162.7710455315]]}
+
+import ase
+import matplotlib.pyplot as plt
+
+def draw_dimer_curve(model, lim=(1.5, 4.9), pairs=[[14,14]]):
+    ndists = 40 #number of distances to look at
+    dists = np.linspace(lim[0],lim[1],ndists) #distance list, can be changed
+
+    frames = []
+    for p in pairs:
+        for d in dists:
+            #using ase we can create the cell and place the atoms
+            atoms = ase.Atoms(numbers=p,pbc=False,cell=np.eye(3)*10,positions=[[0,0,0],[d,0,0]])
+            frames.append(atoms)
+    soap = model.get_representation_calculator()
+    X = soap.transform(frames)
+    e_pairs = model.predict(X)
+    e_pairs -= e_pairs.mean()
+
+    for pair_to_plot in pairs:
+        i = pairs.index(pair_to_plot)
+        fig, ax = plt.subplots()
+        ax.plot(dists,e_pairs[i*ndists:(i+1)*ndists],'--xb',linewidth=1)
+        ax.set_xlabel('Distance (A)')
+        ax.set_ylabel('Predicted energy (eV)')
+        ax.set_title('Bond energy between {} and {}'.format(*pair_to_plot))
+        plt.tight_layout()
+        plt.show()
