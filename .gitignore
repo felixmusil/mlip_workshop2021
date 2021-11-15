@@ -8,7 +8,6 @@ log.txt
 # C extensions
 *.so
 *.npy
-*.json
 *.xyz
 *.extxyz
 # Distribution / packaging
